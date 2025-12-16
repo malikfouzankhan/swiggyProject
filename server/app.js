@@ -7,6 +7,7 @@ import customerPrivateRouter from './controllers/private/customers/private.js';
 import authMiddleware from "./middleware/auth.js";
 import restaurantPublicRouter from "./controllers/public/restaurants/public.js";
 import riderPublicRouter from "./controllers/public/riders/public.js";
+import restaurantPrivateRouter from "./controllers/private/restaurants/private.js"
 
 const port = process.env.PORT;
 
@@ -22,6 +23,8 @@ app.use("/public/restaurant", restaurantPublicRouter);
 app.use("/public/rider", riderPublicRouter);
 app.use(authMiddleware);
 app.use("/private/customer", customerPrivateRouter);
+app.use("/private/restaurant", restaurantPrivateRouter);
+
 
 app.listen(port, ()=>{
     console.log(`Server is up and running at: http://localhost:${port}`);

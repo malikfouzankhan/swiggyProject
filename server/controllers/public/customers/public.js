@@ -150,13 +150,15 @@ router.post("/view-menu", async (req, res)=>{
     try {
         let restaurantChoice = req.body.restaurant;
         let menu = await restaurantModel.find({name: restaurantChoice}, {
-            menu: 1
-        })
+            menu: 1,
+            _id: 0
+        });
+        res.status(200).json({Restaurant: restaurantChoice, menu: menu});
     } catch (error) {
         console.log(error);
         res.status(500).json({msg: error.message});
     }
-})
+});
 
 
 export default router;

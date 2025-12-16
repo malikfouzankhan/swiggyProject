@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.get("/getcustomer", async (req, res)=>{
     try {
-        if(!req.user.isActive)
+        let isActive = await customerModel.find({_id: req.user.id}, {_id: 0, isActive: 1});
+        console.log(isActive);
+        if(!isActive[0].isActive)
         {
             return res.status(400).json({msg: "User does not exist!"});
         }
