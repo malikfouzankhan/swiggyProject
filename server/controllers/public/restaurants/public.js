@@ -51,8 +51,8 @@ router.post("/register", async (req, res)=>{
         console.log(restaurant);
         await restaurantModel.insertOne(restaurant);
 
-        await sendMail(email, name, emailLink);
-        await sendSMS(phone, name, phoneLink);
+        // await sendMail(email, name, emailLink);
+        // await sendSMS(phone, name, phoneLink);
         res.status(201).json({msg: `Hello there ${name}! Welcome aboard!!`});
     } catch (error) {
         console.log(error.message);
@@ -102,10 +102,10 @@ router.post("/login", async (req, res)=>{
         {
             return res.status(404).json({msg: "User not found"});
         }
-        if(!restaurant.isVerified.email || !restaurant.isVerified.phone)
-        {
-            return res.status(401).json({msg: "You have not verified your phone or Email. Please verify before logging in!"});
-        }
+        // if(!restaurant.isVerified.email || !restaurant.isVerified.phone)
+        // {
+        //     return res.status(401).json({msg: "You have not verified your phone or Email. Please verify before logging in!"});
+        // }
         let passCheck = await bcrypt.compare(password, restaurant.password);
         if(!passCheck)
         {

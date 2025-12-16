@@ -30,8 +30,10 @@ const restaurantSchema = new mongoose.Schema({
     },
     menu: {
         type: Array,
-        default: null,
-        item: {
+        default: [],
+        item_id: {
+            type: String
+        },
             name: {
                 type: String,
                 required: true,
@@ -40,7 +42,6 @@ const restaurantSchema = new mongoose.Schema({
                 type: String,
                 required: true
             }
-        }
     },
     orderHistory: {
         type: Array,

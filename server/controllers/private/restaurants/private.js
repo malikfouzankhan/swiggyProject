@@ -1,5 +1,6 @@
 import express from "express";
 import restaurantModel from "../../../Models/Restaurants/Restaurants.js";
+import {v4 as uuid} from "uuid";
 
 const router = express.Router();
 
@@ -62,8 +63,23 @@ router.delete("/deleterestaurant", async (req, res)=>{
 router.post("/additem", async (req, res)=>{
     try {
         let menuData = req.body;
+        menuData.item_id = uuid();
+        console.log(menuData);
         await restaurantModel.updateOne({_id: req.user.id}, {
-            $push: menuData
+            $push: {menu: menuData}
+        });
+        res.status(201).json({msg: `Menu items ${menuData.name} were added successfully!!`});
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({msg: error});
+    }
+});
+
+router.put("/updateitem", async (req, res)=>{
+    try {
+        let menuData = req.body;
+        await restaurantModel.updateOne({_id: req.user.id}, {
+            $push: {menu: menuData}
         });
         res.status(201).json({msg: `Menu items ${menuData.name} were added successfully!!`});
     } catch (error) {
