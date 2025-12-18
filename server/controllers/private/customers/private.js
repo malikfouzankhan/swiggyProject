@@ -101,5 +101,17 @@ router.put("/place-order", async (req, res)=>{
     }
 });
 
+router.get("/get-order", async (req, res)=>{
+    try {
+        let ord_details = await customerModel.findOne({_id: req.user.id},{
+            currentOrder: 1
+        });
+        res.status(200).json(ord_details.currentOrder);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({msg: error});
+    }
+});
+
 
 export default router;
