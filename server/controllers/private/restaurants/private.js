@@ -55,8 +55,8 @@ router.delete("/deleterestaurant", async (req, res)=>{
         });
         res.status(200).json({msg: "Your account was deleted successfully. Farewell!"});
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({msg: error});
+        console.log(error);
+        res.status(500).json({msg: error.message});
     }
 });
 
@@ -68,23 +68,56 @@ router.post("/additem", async (req, res)=>{
         await restaurantModel.updateOne({_id: req.user.id}, {
             $push: {menu: menuData}
         });
-        res.status(201).json({msg: `Menu items ${menuData.name} were added successfully!!`});
+        res.status(201).json({msg: `Menu item ${menuData.name} were added successfully!!`});
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).json({msg: error});
     }
 });
 
 router.put("/updateitem", async (req, res)=>{
     try {
-        let menuData = req.body;
-        await restaurantModel.updateOne({_id: req.user.id}, {
-            $push: {menu: menuData}
+        let {name, price, item_id, inStock} = req.body;
+        let updated = await restaurantModel.updateOne({_id: req.user.id, 'menu.item_id': item_id}, {
+            $set: {"menu.$.name": name, "menu.$.price": price, "menu.$.inStock": inStock}
         });
-        res.status(201).json({msg: `Menu items ${menuData.name} were added successfully!!`});
+        console.log(updated);
+        res.status(201).json({msg: `Menu item/s were updated successfully!!`});
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).json({msg: error});
+    }
+});
+
+router.delete("/deleteitem", async (req, res)=>{
+    try {
+        let {item_id} = req.body;
+        let deleted = await restaurantModel.updateOne({_id: req.user.id, 'menu.item_id': item_id}, {
+            $pull: {menu: {item_id}
+        }}, {
+            new: true
+        });
+        if(deleted.modifiedCount === 0)
+        {
+            return res.status(404).json({msg: "Menu item not found!!"});
+        }
+        // console.log(deleted);
+        res.status(200).json({msg: `Menu item with ID: ${item_id} was deleted successfully!`});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({msg: error.message});
+    }
+});
+
+router.delete("/deletemenu", async (req, res)=>{
+    try {
+        let deleted = await restaurantModel.updateOne({_id: req.user.id}, {
+            $set: {menu: []}
+        });
+        res.status(204).json({msg: "Menu deleted successfully!!"});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({msg: error.message});
     }
 });
 

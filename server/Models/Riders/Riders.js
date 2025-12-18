@@ -26,7 +26,7 @@ const riderSchema = new mongoose.Schema({
     },
     orderHistory: {
         type: Array,
-        default: null,
+        default: [],
         orderDetails: {
                 type: Object,
                 customer_name: {
@@ -52,12 +52,16 @@ const riderSchema = new mongoose.Schema({
                 item_quantity: {
                     type: Number,
                     required: true
+                },
+                total: {
+                    type: Number,
+                    required: true
                 }
         }
     },
     currentOrder: {
         type: Array,
-        default: null,
+        default: [],
         order: {
             type: Object,
             customer_name: {
@@ -83,12 +87,20 @@ const riderSchema = new mongoose.Schema({
             item_quantity: {
                 type: Number,
                 required: true
+            },
+            total: {
+                type: Number,
+                required: true
             }
         }
     },
     isActive: {
         type: Boolean,
         default: true
+    },
+    isOnline: {
+        type: Boolean,
+        default: false
     },
     isVerified: {
         email: {

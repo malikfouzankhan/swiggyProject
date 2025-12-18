@@ -39,13 +39,17 @@ const restaurantSchema = new mongoose.Schema({
                 required: true,
             },
             price: {
-                type: String,
+                type: Number,
+                required: true
+            },
+            inStock: {
+                type: Number,
                 required: true
             }
     },
     orderHistory: {
         type: Array,
-        default: null,
+        default: [],
         orderDetails: {
                 type: Object,
                 customer_name: {
@@ -63,13 +67,17 @@ const restaurantSchema = new mongoose.Schema({
                 item_quantity: {
                     type: Number,
                     required: true
+                },
+                total: {
+                    type: Number,
+                    required: true
                 }
         }
     },
 
     currentOrder: {
         type: Array,
-        default: null,
+        default: [],
         order: {
             customer_name: {
                 type: String,
@@ -86,6 +94,10 @@ const restaurantSchema = new mongoose.Schema({
             item_quantity: {
                 type: Number,
                 required: true
+            },
+            total: {
+                type: Number,
+                requried: true
             }
         }
     },

@@ -18,12 +18,14 @@ app.get("/", (req, res)=>{
     res.status(200).json({msg: "Server is running holding good 👍"});
 });
 
+
 app.use("/public/customer", customerPublicRouter);
 app.use("/public/restaurant", restaurantPublicRouter);
 app.use("/public/rider", riderPublicRouter);
 app.use(authMiddleware);
 app.use("/private/customer", customerPrivateRouter);
 app.use("/private/restaurant", restaurantPrivateRouter);
+
 
 
 app.listen(port, ()=>{

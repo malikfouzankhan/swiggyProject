@@ -50,8 +50,8 @@ router.post("/register", async (req, res)=>{
         console.log(rider);
         await riderModel.insertOne(rider);
 
-        await sendMail(email, name, emailLink);
-        await sendSMS(phone, name, phoneLink);
+        // await sendMail(email, name, emailLink);
+        // await sendSMS(phone, name, phoneLink);
         res.status(201).json({msg: `Hello there ${name}! Welcome aboard!!`});
     } catch (error) {
         console.log(error);
@@ -96,7 +96,9 @@ router.get("/verify-phone/:phone_token", async (req, res)=>{
 router.post("/login", async (req, res)=>{
     try {
         let {email, password} = req.body;
-        let rider = await riderModel.findOne({email: email});
+        let rider = await riderModel.findOneAndUpdate({email: email}, {
+            isOnline: true
+        });
         if(!rider)
         {
             return res.status(404).json({msg: "Rider not found"});

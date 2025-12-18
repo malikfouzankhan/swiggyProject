@@ -52,8 +52,8 @@ router.post("/register", async (req, res)=>{
         console.log(user);
         await customerModel.insertOne(user);
 
-        await sendMail(email, name, emailLink);
-        await sendSMS(phone, name, phoneLink);
+        // await sendMail(email, name, emailLink);
+        // await sendSMS(phone, name, phoneLink);
         res.status(201).json({msg: `Hello there ${name}! Welcome aboard!!`});
     } catch (error) {
         console.log(error);
